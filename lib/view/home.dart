@@ -36,11 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
               icon: new Icon(Icons.home),
-              label: "Home"
+              label: "Browse"
           ),
           BottomNavigationBarItem(
               icon: new Icon(Icons.favorite),
-              label: "Favorites"
+              label: "Groups"
           ),
           BottomNavigationBarItem(
               icon: new Icon(Icons.account_circle),
