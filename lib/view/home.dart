@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               label: "Browse"
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.favorite),
+              icon: new Icon(Icons.group),
               label: "Groups"
           ),
           BottomNavigationBarItem(
