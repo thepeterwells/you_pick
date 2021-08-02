@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
+              icon: new Icon(Icons.list),
               label: "Browse"
           ),
           BottomNavigationBarItem(
