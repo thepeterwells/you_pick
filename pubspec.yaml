@@ -31,25 +31,20 @@ dependencies:
   shared_preferences: ^0.5.3+4
   http: ^0.12.0
   intl: ^0.17.0
+  firebase_core: "^1.4.0"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.9.1"
 
-flutter_icons:
-  image_path_android: "lib/assets/icons/ic_launcher_android.png"
-  image_path_ios: "lib/assets/icons/ic_launcher_ios.png"
-  adaptive_icon_background: "#222020"
-  adaptive_icon_foreground: "lib/assets/icons/ic_launcher_android.png"
-  android: true
-  ios: true
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
