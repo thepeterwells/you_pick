@@ -26,7 +26,7 @@ class MovieListWidget extends StatefulWidget {
 
   final MovieListPresenter presenter;
 
-  const MovieListWidget({required this.presenter});
+  const MovieListWidget({ required this.presenter });
 
   @override
   State createState() => MovieListState(presenter: presenter);
@@ -37,7 +37,7 @@ class MovieListState extends State<MovieListWidget> implements IMovieList {
   bool _isLoading = true;
   ListView? _listView;
 
-  MovieListState({required this.presenter});
+  MovieListState({ required this.presenter });
 
   @override
   void initState() {
