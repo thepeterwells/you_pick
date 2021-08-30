@@ -4,4 +4,5 @@ abstract class ILogin {
   void showError();
   void openCreateAccountFlow();
   void setHasAccessToken(bool hasToken);
+  void setSubmitButtonEnabled(bool enabled);
 }

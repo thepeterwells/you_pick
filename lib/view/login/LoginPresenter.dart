@@ -3,6 +3,8 @@ import 'package:you_pick/view/login/ILogin.dart';
 
 class LoginPresenter {
   ILogin? _view;
+  String? _email;
+  String? _password;
 
   static final LoginPresenter _singleton = LoginPresenter._internal();
   LoginPresenter._internal();
@@ -20,5 +22,13 @@ class LoginPresenter {
 
     var _accessToken = _preferences.get('accessToken') ?? '-1';
     _view?.setHasAccessToken(_accessToken != '-1');
+  }
+
+  void onEmailInputChanged(String email) {
+
+  }
+
+  void onPasswordInputChanged(String password) {
+
   }
 }

@@ -13,7 +13,7 @@ class LiveMovieListService implements MovieListService{
   @override
   Future<List<Movie>> getMovies() async {
     final _preferences = await SharedPreferences.getInstance();
-    final response = await http.get(MovieListService.movieListUrl,
+    final response = await http.get(Uri.parse(MovieListService.movieListUrl),
         headers: { HttpHeaders.authorizationHeader: 'Bearer ' + _preferences.get('api_token') });
 
     final body = response.body;
