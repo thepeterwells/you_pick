@@ -25,10 +25,22 @@ class LoginPresenter {
   }
 
   void onEmailInputChanged(String email) {
-
+    _email = email;
+    _validateUserInputs();
   }
 
   void onPasswordInputChanged(String password) {
+    _password = password;
+    _validateUserInputs();
+  }
 
+  void _validateUserInputs() {
+    if (_email == null || _password == null) {
+      _view?.setSubmitButtonEnabled(false);
+    }
+    bool isEmailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email!);
+    bool isPasswordValid = _password!.isNotEmpty;
+
+    _view?.setSubmitButtonEnabled(isEmailValid && isPasswordValid);
   }
 }

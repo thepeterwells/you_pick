@@ -44,6 +44,7 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   final LoginPresenter presenter;
   bool _hasAccessToken = false;
   bool _showPassword = false;
+  bool _loginButtonEnabled = false;
 
   _LoginScreenState({ required this.presenter });
 
@@ -52,6 +53,8 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   void initState() {
     setState(() {
       _hasAccessToken = false;
+      _showPassword = false;
+      _loginButtonEnabled = false;
     });
     WidgetsBinding.instance!.addPostFrameCallback((_) => presenter.start(this));
   }
@@ -123,6 +126,48 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                     )
                   ),
                 )
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 24.0, left: 32.0, right: 32.0),
+              child: ElevatedButton(
+                // style: ElevatedButton.styleFrom(
+                //   minimumSize: Size(double.infinity, 32.0),
+                //   padding: EdgeInsets.all(8.0),
+                //   primary: AppTheme.secondaryDarkColor,
+                //   textStyle: TextStyle(
+                //     color: AppTheme.primaryTextColor,
+                //     fontSize: 18,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                    if (states.contains(MaterialState.disabled)) {
+                      return AppTheme.primaryLightColor;
+                    }
+                    return AppTheme.secondaryDarkColor;
+                  }),
+                  minimumSize: MaterialStateProperty.resolveWith<Size>((states) {
+                    return Size(double.infinity, 32.0);
+                  }),
+                  textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
+                    if (states.contains(MaterialState.disabled)) {
+                      return TextStyle(
+                          color: AppTheme.primaryDarkColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                      );
+                    }
+                    return TextStyle(
+                      color: AppTheme.primaryTextColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                    );
+                  })
+                ),
+                child: Text('LOGIN'),
+                onPressed: _loginButtonEnabled ? () {  } : null,
+              ),
             )
           ],
         ),
@@ -159,7 +204,9 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
 
   @override
   void setSubmitButtonEnabled(bool enabled) {
-
+    setState(() {
+      _loginButtonEnabled = enabled;
+    });
   }
 
   void _togglePasswordVisibility() {
