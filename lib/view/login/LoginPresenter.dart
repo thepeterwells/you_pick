@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:you_pick/utils/TMDbUtil.dart';
 import 'package:you_pick/view/login/ILogin.dart';
+import 'package:tmdb_api/tmdb_api.dart';
 
 class LoginPresenter {
   ILogin? _view;
   String? _email;
   String? _password;
+  TMDB? _tmdbService;
 
   static final LoginPresenter _singleton = LoginPresenter._internal();
   LoginPresenter._internal();
@@ -15,6 +19,7 @@ class LoginPresenter {
 
   void start(ILogin view) async {
     _view = view;
+    _tmdbService = TMDbUtil.initializeTMDb();
     final _preferences = await SharedPreferences.getInstance();
     if ((_preferences.get('api_token') ?? '-1') == '-1') {
       _preferences.setString('api_token', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWRmMTc0YWNjZTlmMDRmYTA3NjE4Y2M0MzRkMzJiOSIsInN1YiI6IjYwYjZlMjZlYTA2NjQ1MDAyYTU2ZjM5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3CtYzXrcZrf-acVddbJrZ6FcmbvA3YKmMHH3ur3-wNg');
@@ -42,5 +47,9 @@ class LoginPresenter {
     bool isPasswordValid = _password!.isNotEmpty;
 
     _view?.setSubmitButtonEnabled(isEmailValid && isPasswordValid);
+  }
+
+  void _login() {
+
   }
 }

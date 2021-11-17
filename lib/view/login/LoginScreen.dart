@@ -5,6 +5,7 @@ import 'package:you_pick/utils/ColorUtil.dart';
 import 'package:you_pick/view/home.dart';
 import 'package:you_pick/view/login/LoginPresenter.dart';
 import 'package:you_pick/view/navigation/BottomNavigationScreen.dart';
+import 'package:you_pick/view/registration/RegistrationScreen.dart';
 
 import 'ILogin.dart';
 
@@ -96,7 +97,7 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppTheme.primaryTextColor)
                   ),
-                  labelText: 'TMDb Account Email',
+                  labelText: 'Email',
                   labelStyle: TextStyle(color: AppTheme.primaryLightColor)
                 ),
               )
@@ -130,16 +131,6 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
             Container(
               margin: EdgeInsets.only(top: 24.0, left: 32.0, right: 32.0),
               child: ElevatedButton(
-                // style: ElevatedButton.styleFrom(
-                //   minimumSize: Size(double.infinity, 32.0),
-                //   padding: EdgeInsets.all(8.0),
-                //   primary: AppTheme.secondaryDarkColor,
-                //   textStyle: TextStyle(
-                //     color: AppTheme.primaryTextColor,
-                //     fontSize: 18,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
                     if (states.contains(MaterialState.disabled)) {
@@ -167,6 +158,20 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                 ),
                 child: Text('LOGIN'),
                 onPressed: _loginButtonEnabled ? () {  } : null,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 8.0, left: 32.0, right: 32.0),
+              child: TextButton(
+                child: Text(
+                  'Create Account',
+                  style: TextStyle(
+                      color: AppTheme.primaryTextColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen())); },
               ),
             )
           ],
