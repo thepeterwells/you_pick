@@ -1,6 +1,7 @@
 abstract class IRegistration {
-  void showInvalidEmail(String errorMsg);
-  void showInvalidPassword(String errorMsg);
+  Future<void> showError(String errorMsg);
+  void showProgress();
+  void hideProgress();
   void setRegisterButtonEnabled(bool enabled);
   void onRegistrationComplete();
 }

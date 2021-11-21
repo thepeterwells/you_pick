@@ -43,6 +43,7 @@ class RegistrationPresenter {
   }
 
   Future<void> registerUser() async {
+    _view?.showProgress();
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _email!,
@@ -61,12 +62,14 @@ class RegistrationPresenter {
         }
       );
     } on FirebaseAuthException catch (e) {
+      _view?.hideProgress();
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        _view?.showError('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        _view?.showError('This email is already in use.');
       }
     } catch (e) {
+      _view?.hideProgress();
       print(e);
     }
   }

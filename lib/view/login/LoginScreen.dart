@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                     return AppTheme.secondaryDarkColor;
                   }),
                   minimumSize: MaterialStateProperty.resolveWith<Size>((states) {
-                    return Size(double.infinity, 32.0);
+                    return Size(double.infinity, 48.0);
                   }),
                   textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
                     if (states.contains(MaterialState.disabled)) {

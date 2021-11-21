@@ -38,6 +38,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
   final RegistrationPresenter presenter;
   bool _showPassword = false;
   bool _registerButtonEnabled = false;
+  bool _isLoading = false;
 
   _RegistrationScreenState({ required this.presenter });
 
@@ -46,6 +47,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
     setState(() {
       _showPassword = false;
       _registerButtonEnabled = false;
+      _isLoading = false;
     });
     WidgetsBinding.instance!.addPostFrameCallback((_) => presenter.start(this));
   }
@@ -172,7 +174,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
                       return AppTheme.secondaryDarkColor;
                     }),
                     minimumSize: MaterialStateProperty.resolveWith<Size>((states) {
-                      return Size(double.infinity, 32.0);
+                      return Size(double.infinity, 48.0);
                     }),
                     textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) {
                       if (states.contains(MaterialState.disabled)) {
@@ -189,8 +191,8 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
                       );
                     })
                 ),
-                child: Text('REGISTER'),
-                onPressed: _registerButtonEnabled ? () { presenter.registerUser(); } : null,
+                child: _isLoading ? CircularProgressIndicator(color: AppTheme.primaryTextColor) : Text('REGISTER'),
+                onPressed: _registerButtonEnabled && !_isLoading ? () { presenter.registerUser(); } : null,
               ),
             )
           ],
@@ -200,18 +202,36 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
   }
 
   @override
-  void showInvalidEmail(String errorMsg) {
-
-  }
-
-  @override
   void onRegistrationComplete() {
     Navigator.pop(context);
   }
 
   @override
-  void showInvalidPassword(String errorMsg) {
-
+  Future<void> showError(String errorMsg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(errorMsg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -224,6 +244,20 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
   void _togglePasswordVisibility() {
     setState(() {
       _showPassword = !_showPassword;
+    });
+  }
+
+  @override
+  void showProgress() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  @override
+  void hideProgress() {
+    setState(() {
+      _isLoading = false;
     });
   }
 }
