@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                   })
                 ),
                 child: Text('LOGIN'),
-                onPressed: _loginButtonEnabled ? () {  } : null,
+                onPressed: _loginButtonEnabled ? () { presenter.login(); } : null,
               ),
             ),
             Container(
@@ -187,12 +187,12 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
 
   @override
   void openHomeScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationScreen()));
   }
 
   @override
   void openCreateAccountFlow() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()), );
   }
 
   @override

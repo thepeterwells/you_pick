@@ -1,3 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:uuid/uuid.dart';
 import 'package:you_pick/view/registration/IRegistration.dart';
 
 class RegistrationPresenter {
@@ -36,6 +40,35 @@ class RegistrationPresenter {
   void onConfirmPasswordInputChanged(String confirmPassword) {
     _confirmPassword = confirmPassword;
     _validateUserInputs();
+  }
+
+  Future<void> registerUser() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email!,
+          password: _password!
+      ).then((userCredentials) => {
+          FirebaseDatabase.instance.reference()
+              .child('users')
+              .child(userCredentials.user!.uid)
+              .set(<String, Object?> {
+                "username": _username,
+                "email": _email
+              })
+              .then((onValue) {
+                _view!.onRegistrationComplete();
+              })
+        }
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _validateUserInputs() {

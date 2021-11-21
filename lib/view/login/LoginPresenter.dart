@@ -18,6 +18,13 @@ class LoginPresenter {
 
   void start(ILogin view) async {
     _view = view;
+    TMDbUtil.initializeTMDb();
+
+    final _preferences = await SharedPreferences.getInstance();
+    if ((_preferences.get('api_token') ?? '-1') == '-1') {
+      _preferences.setString('api_token', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWRmMTc0YWNjZTlmMDRmYTA3NjE4Y2M0MzRkMzJiOSIsInN1YiI6IjYwYjZlMjZlYTA2NjQ1MDAyYTU2ZjM5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3CtYzXrcZrf-acVddbJrZ6FcmbvA3YKmMHH3ur3-wNg');
+    }
+
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User? user) {
@@ -47,7 +54,20 @@ class LoginPresenter {
     _view?.setSubmitButtonEnabled(isEmailValid && isPasswordValid);
   }
 
-  void _login() {
-
+  Future<void> login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email!,
+          password: _password!
+      ).then((userCredentials) => {
+        _view?.openHomeScreen()
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 }

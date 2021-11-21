@@ -190,7 +190,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
                     })
                 ),
                 child: Text('REGISTER'),
-                onPressed: _registerButtonEnabled ? () {  } : null,
+                onPressed: _registerButtonEnabled ? () { presenter.registerUser(); } : null,
               ),
             )
           ],
@@ -206,7 +206,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
 
   @override
   void onRegistrationComplete() {
-
+    Navigator.pop(context);
   }
 
   @override
