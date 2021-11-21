@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:you_pick/utils/ColorUtil.dart';
@@ -62,9 +63,6 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
 
   @override
   Widget build(BuildContext context) {
-    if (_hasAccessToken) {
-      return BottomNavigationScreen();
-    }
     return Scaffold(
       backgroundColor: AppTheme.primaryDarkColor,
       body: SingleChildScrollView(
@@ -171,7 +169,7 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                       fontWeight: FontWeight.bold
                   ),
                 ),
-                onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen())); },
+                onPressed: () { openCreateAccountFlow(); },
               ),
             )
           ],
@@ -188,8 +186,13 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   }
 
   @override
-  void openCreateAccountFlow() {
+  void openHomeScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  }
 
+  @override
+  void openCreateAccountFlow() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
   }
 
   @override
