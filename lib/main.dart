@@ -43,6 +43,12 @@ class _AppState extends State<App> {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
+          Widget landingScreen;
+          if (FirebaseAuth.instance.currentUser != null) {
+            landingScreen = HomeScreen();
+          } else {
+            landingScreen = LoginScreen();
+          }
           return MaterialApp(
             title: 'You Pick',
             theme: ThemeData(
@@ -53,7 +59,7 @@ class _AppState extends State<App> {
               accentColor: AppTheme.secondaryColor,
 
             ),
-            home: LoginScreen(),
+            home: landingScreen,
           );
         }
 

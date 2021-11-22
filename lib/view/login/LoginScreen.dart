@@ -44,9 +44,9 @@ class LoginWidget extends StatefulWidget {
 class _LoginScreenState extends State<LoginWidget> implements ILogin {
 
   final LoginPresenter presenter;
-  bool _hasAccessToken = false;
   bool _showPassword = false;
   bool _loginButtonEnabled = false;
+  bool _isLoading = false;
 
   _LoginScreenState({ required this.presenter });
 
@@ -54,9 +54,9 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   @override
   void initState() {
     setState(() {
-      _hasAccessToken = false;
       _showPassword = false;
       _loginButtonEnabled = false;
+      _isLoading = false;
     });
     WidgetsBinding.instance!.addPostFrameCallback((_) => presenter.start(this));
   }
@@ -154,8 +154,12 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
                     );
                   })
                 ),
-                child: Text('LOGIN'),
-                onPressed: _loginButtonEnabled ? () { presenter.login(); } : null,
+                child: _isLoading ? CircularProgressIndicator(color: AppTheme.primaryTextColor) : Text('LOGIN'),
+                onPressed: _loginButtonEnabled ? () {
+                  if (!_isLoading) {
+                    presenter.login();
+                  }
+                } : null,
               ),
             ),
             Container(
@@ -179,13 +183,6 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   }
 
   @override
-  void setHasAccessToken(bool hasToken) {
-    setState(() {
-      _hasAccessToken = hasToken;
-    });
-  }
-
-  @override
   void openHomeScreen() {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationScreen()));
   }
@@ -196,18 +193,45 @@ class _LoginScreenState extends State<LoginWidget> implements ILogin {
   }
 
   @override
-  void showError() {
-
+  Future<void> showError(String errorMsg) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(errorMsg),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   void hideProgress() {
-
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   void showProgress() {
-
+    setState(() {
+      _isLoading = true;
+    });
   }
 
   @override

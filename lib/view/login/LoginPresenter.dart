@@ -24,14 +24,6 @@ class LoginPresenter {
     if ((_preferences.get('api_token') ?? '-1') == '-1') {
       _preferences.setString('api_token', 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzOWRmMTc0YWNjZTlmMDRmYTA3NjE4Y2M0MzRkMzJiOSIsInN1YiI6IjYwYjZlMjZlYTA2NjQ1MDAyYTU2ZjM5YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3CtYzXrcZrf-acVddbJrZ6FcmbvA3YKmMHH3ur3-wNg');
     }
-
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User? user) {
-          if (user != null) {
-            _view?.openHomeScreen();
-          }
-        });
   }
 
   void onEmailInputChanged(String email) {
@@ -55,6 +47,7 @@ class LoginPresenter {
   }
 
   Future<void> login() async {
+    _view?.showProgress();
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email!,
@@ -63,10 +56,11 @@ class LoginPresenter {
         _view?.openHomeScreen()
       });
     } on FirebaseAuthException catch (e) {
+      _view?.hideProgress();
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        _view?.showError('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        _view?.showError('Wrong password provided for that user.');
       }
     }
   }

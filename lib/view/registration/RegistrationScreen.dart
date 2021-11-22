@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:you_pick/utils/ColorUtil.dart';
+import 'package:you_pick/view/home.dart';
 import 'package:you_pick/view/registration/IRegistration.dart';
 import 'package:you_pick/view/registration/RegistrationPresenter.dart';
 
@@ -192,7 +193,11 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
                     })
                 ),
                 child: _isLoading ? CircularProgressIndicator(color: AppTheme.primaryTextColor) : Text('REGISTER'),
-                onPressed: _registerButtonEnabled && !_isLoading ? () { presenter.registerUser(); } : null,
+                onPressed: _registerButtonEnabled ? () {
+                  if (!_isLoading) {
+                    presenter.registerUser();
+                  }
+                } : null,
               ),
             )
           ],
@@ -203,7 +208,7 @@ class _RegistrationScreenState extends State<RegistrationWidget> implements IReg
 
   @override
   void onRegistrationComplete() {
-    Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()), (Route<dynamic> route) => false);
   }
 
   @override
